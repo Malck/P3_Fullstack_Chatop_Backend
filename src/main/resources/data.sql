@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS user;
+
 CREATE TABLE `USERS` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
   `email` varchar(255),
@@ -6,6 +8,8 @@ CREATE TABLE `USERS` (
   `created_at` timestamp,
   `updated_at` timestamp
 );
+
+INSERT INTO user (id, email, name, password, created_at, updated_at) VALUES ('1',"mal.co@gmail.com","user", 'password', '0',"0");
 
 CREATE TABLE `RENTALS` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
