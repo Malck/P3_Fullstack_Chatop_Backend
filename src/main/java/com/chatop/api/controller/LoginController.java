@@ -5,8 +5,10 @@ import org.springframework.http.ResponseEntity;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 //import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,26 +29,28 @@ public class LoginController {
 		this.jwtService = jwtService;
 	}
 
-	@PostMapping("/login")
+	@PostMapping("/api/auth/login")
     public String getToken(Authentication authentication) {
-    String token = jwtService.generateToken(authentication);
+    String token = jwtService.generateToken(authentication.getName());
     return token;
-
 	}
 
 	@PostMapping("/api/auth/register") 
 	
-	public ResponseEntity<?> saveUser(User userDTO) throws Exception {
+	public ResponseEntity<?> saveUser(@RequestBody User userDTO) throws Exception {
 
 		userDetailsService.save(userDTO);
 
 		// Load user details
-		//final CustomUserDetails userDetails = userDetailsService.loadUserByUserEmail(user.getEmail());
+		final UserDetails userDetails = userDetailsService.loadUserByUsername(userDTO.getEmail());
+		if(userDetails == null ){
+			return ResponseEntity.status(500).body(null);
+		}
 
 		// Generate token
-		//final String token = jwtTokenUtil.generateToken(userDetails);
+		final String token = jwtService.generateToken(userDTO.getEmail());
 
-		return ResponseEntity.ok("hello");
+		return ResponseEntity.ok("token:{" + token + "}");
 	}
 }
 
