@@ -6,14 +6,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.chatop.api.model.User;
+import com.chatop.api.model.UserDTO;
 import com.chatop.api.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
-
 
 @Service
 public class MyUserDetailsService implements UserDetailsService {
@@ -49,4 +48,11 @@ public class MyUserDetailsService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
         return authorities;
     }
+    
+    @SuppressWarnings("null")
+    public User save(User user) {
+        User savedUser = userRepository.save(user);
+        return savedUser;
+    }
+
 }
