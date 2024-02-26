@@ -1,37 +1,39 @@
 package com.chatop.api.configuration;
 
-import javax.crypto.spec.SecretKeySpec;
-
+import com.nimbusds.jose.jwk.source.ImmutableSecret;
+//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import javax.crypto.spec.SecretKeySpec;
+
 
 @Configuration
 @EnableWebSecurity
 
 public class SpringSecurityConfig {
 
-    private String jwtKey = "laclegeneree256....";
+
+    private String jwtKey = "jwt-key";
 
 	// public static final String[] allowedRoutes = {"/auth/register", "/auth/login", "/images/**", "/swagger-ui/**", "/v3/api-docs/**"};
 
@@ -45,9 +47,25 @@ public class SpringSecurityConfig {
 
         return new ProviderManager(authenticationProvider);
     }
+	
+	@Bean
+    @Order(1)
+    public SecurityFilterChain noAuthFilterChain(HttpSecurity http) throws Exception {
+		return http
+				.csrf(csrf -> csrf.disable())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.antMatcher("/api/auth/register")
+				//httpSecurity.csrf().disable().authorizeRequests().antMatchers("/api/auth/login", "/api/auth/register").permitAll()
+				.authorizeHttpRequests(auth -> {
+					auth.anyRequest().permitAll(); // Autoriser l'accès sans authentification
+				})
+				.build();
+	}
+
+	
 
 	@Bean
-	@Order(1)
+	@Order(2)
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 		    .csrf(csrf -> csrf.disable())
@@ -57,21 +75,8 @@ public class SpringSecurityConfig {
 			.httpBasic(Customizer.withDefaults()).build();
 	}
 
-	@Bean
-    @Order(2)
-    public SecurityFilterChain noAuthFilterChain(HttpSecurity http) throws Exception {
-		return http
-				.csrf(csrf -> csrf.disable())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.antMatcher("/auth/register")
-				.authorizeHttpRequests(auth -> {
-					auth.anyRequest().permitAll(); // Autoriser l'accès sans authentification
-				})
-				.build();
-	}
 	
 	
-
 	@Bean
 	public JwtEncoder jwtEncoder() {
 		return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));
@@ -88,7 +93,7 @@ public class SpringSecurityConfig {
 		return new BCryptPasswordEncoder();
 	}
     
-
+}
 	/* 
 	@Autowired CustomService customService;
 	
@@ -127,4 +132,4 @@ public class SpringSecurityConfig {
     // }
 	
 	*/
-}
+
