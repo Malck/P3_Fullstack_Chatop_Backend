@@ -33,9 +33,8 @@ import javax.crypto.spec.SecretKeySpec;
 public class SpringSecurityConfig {
 
 
-    private String jwtKey = "jwt-key";
+    private String jwtKey = "testststsststststststsststststsstststs34";
 
-	// public static final String[] allowedRoutes = {"/auth/register", "/auth/login", "/images/**", "/swagger-ui/**", "/v3/api-docs/**"};
 
 	@Bean
     public AuthenticationManager authenticationManager(
@@ -62,10 +61,20 @@ public class SpringSecurityConfig {
 				.build();
 	}
 
-	
-
 	@Bean
-	@Order(2)
+    @Order(2)
+    public SecurityFilterChain noAuthaFilterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .antMatcher("/api/auth/login")
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .build();
+    }
+
+	
+	@Bean
+	@Order(3)
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http
 		    .csrf(csrf -> csrf.disable())
@@ -94,42 +103,4 @@ public class SpringSecurityConfig {
 	}
     
 }
-	/* 
-	@Autowired CustomService customService;
 	
-	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		return http.authorizeHttpRequests(auth -> {
-            auth.antMatchers("/admin").hasRole("ADMIN");
-            auth.antMatchers("/user").hasRole("USER");
-            auth.anyRequest().authenticated();
-        }).formLogin(Customizer.withDefaults()).build();
-	}
-
-	// @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    //     http
-    //         // Security on requests
-    //         .authorizeHttpRequests((request) -> {
-    //             for (String allowedRoute : allowedRoutes) {
-    //                 request.requestMatchers(allowedRoute).permitAll();
-    //             }
-    //             request.anyRequest().authenticated();
-    //         })
-
-    //         // Stateless session
-    //         .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-    //         // CSRF disabled because stateless session
-    //         .csrf(AbstractHttpConfigurer::disable)
-
-    //         // Custom Jwt Authentification filter
-    //         .authenticationProvider(authenticationProvider()).addFilterBefore(
-    //                 jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-    //         ;
-            
-    //     return http.build();
-    // }
-	
-	*/
-
