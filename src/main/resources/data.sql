@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS RENTALS;
 DROP TABLE IF EXISTS USERS;
+DROP TABLE IF EXISTS MESSAGES;
 
 CREATE TABLE `USERS` (
   `id` integer PRIMARY KEY AUTO_INCREMENT,
@@ -38,3 +39,8 @@ ALTER TABLE `RENTALS` ADD FOREIGN KEY (`owner_id`) REFERENCES `USERS` (`id`);
 ALTER TABLE `MESSAGES` ADD FOREIGN KEY (`user_id`) REFERENCES `USERS` (`id`);
 
 ALTER TABLE `MESSAGES` ADD FOREIGN KEY (`rental_id`) REFERENCES `RENTALS` (`id`);
+
+INSERT INTO USERS (email, name, password)
+ VALUES ('user@user.fr','user', '$2y$10$.qkbukzzX21D.bqbI.B2R.tvWP90o/Y16QRWVLodw51BHft7ZWbc.' ),
+('admin@admin.fr','admin', '$2y$10$kp1V7UYDEWn17WSK16UcmOnFd1mPFVF6UkLrOOCGtf24HOYt8p1iC'),
+('test@test.com', 'test', 'test31');
