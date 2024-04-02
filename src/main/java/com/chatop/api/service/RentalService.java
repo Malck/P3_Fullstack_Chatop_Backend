@@ -1,14 +1,25 @@
 package com.chatop.api.service;
 
+//import java.util.Optional;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import com.chatop.api.model.Rental;
+
+//import com.chatop.api.repository.RentalRepository;
+
+//import org.springframework.stereotype.Service;
+//import lombok.Data;
+import java.util.List;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import com.chatop.api.model.Rental;
+import com.chatop.api.model.RentalDTO;
 import com.chatop.api.repository.RentalRepository;
 
-import org.springframework.stereotype.Service;
 import lombok.Data;
 
-@Data
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 @Service
 public class RentalService {
 
@@ -19,18 +30,23 @@ public class RentalService {
         return rentalRepository.findById(id);
     }
 
-    public Iterable<Rental> getRentals() {
+    public List<Rental> getAllRental() {
         return rentalRepository.findAll();
     }
 
-    public void deleteRental(final Integer id) {
-        rentalRepository.deleteById(id);
+    public Rental updateRental(Rental rental) {
+        Rental updateRental = rentalRepository.save(rental);
+        return updateRental;
     }
 
-    public Rental saveRental(Rental rental) {
+    public Rental createRental(Rental rental) {
         Rental savedRental = rentalRepository.save(rental);
         return savedRental;
     }  
 
 }
+
+
+ 
+
 
