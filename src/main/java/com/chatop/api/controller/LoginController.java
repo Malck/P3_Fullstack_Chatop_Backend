@@ -62,6 +62,8 @@ public class LoginController {
 		return ResponseEntity.ok(Map.of("token", token));
 	}
 
+	public static UserDetails user = null;
+
 
 	@PostMapping("/api/auth/login")
 
@@ -72,6 +74,12 @@ public class LoginController {
 		if(userDetails == null ){
 			return ResponseEntity.status(502).body(null);
 		}
+        
+
+		/* -----------ici -------------- */
+		// user 
+
+
 
 	 	final String token = jwtService.generateToken(authenticationRequest.getEmail());
 
@@ -82,7 +90,7 @@ public class LoginController {
 	
 	@GetMapping("api/auth/me")
      public ResponseEntity<UserDTO> me(Principal principal) throws Exception {
-		UserDTO userResponse = new UserDTO(1,"test","test@test.com","2022/02/02","2022/08/02" );
+		UserDTO userResponse = new UserDTO(1,"test TEST","test@test.com","2022/02/02","2022/08/02" );
                   
         return ResponseEntity.ok(userResponse);
     }

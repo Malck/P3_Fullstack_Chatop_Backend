@@ -43,4 +43,6 @@ ALTER TABLE `MESSAGES` ADD FOREIGN KEY (`rental_id`) REFERENCES `RENTALS` (`id`)
 INSERT INTO USERS (email, name, password)
  VALUES ('user@user.fr','user', '$2y$10$.qkbukzzX21D.bqbI.B2R.tvWP90o/Y16QRWVLodw51BHft7ZWbc.' ),
 ('admin@admin.fr','admin', '$2y$10$kp1V7UYDEWn17WSK16UcmOnFd1mPFVF6UkLrOOCGtf24HOYt8p1iC'),
-('test@test.com', 'test', 'test31');
+('test@test.com', 'test TEST', 'test!31');
+
+/* Ajouter des rentals ici pour les afficher avec le get dans le rentalcontroller*/ 
