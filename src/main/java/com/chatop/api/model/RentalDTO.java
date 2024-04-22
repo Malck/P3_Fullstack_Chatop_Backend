@@ -1,6 +1,8 @@
 package com.chatop.api.model;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +26,8 @@ public class RentalDTO {
 
     private long ownerId;
 
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
-    private LocalDateTime updatedAt;
+    private Date updatedAt;
     
 }
