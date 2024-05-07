@@ -1,7 +1,6 @@
 package com.chatop.api.configuration;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
-//import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -11,7 +10,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,19 +20,16 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.crypto.spec.SecretKeySpec;
-
 
 @Configuration
 @EnableWebSecurity
 
 public class SpringSecurityConfig {
 
-
+    /* taille minimum pour que la clée fonctionne */
     private String jwtKey = "testststsststststststsststststsstststs34";
-
 
 	@Bean
     public AuthenticationManager authenticationManager(
@@ -54,9 +49,8 @@ public class SpringSecurityConfig {
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.antMatcher("/api/auth/register")
-				//httpSecurity.csrf().disable().authorizeRequests().antMatchers("/api/auth/login", "/api/auth/register").permitAll()
 				.authorizeHttpRequests(auth -> {
-					auth.anyRequest().permitAll(); // Autoriser l'accès sans authentification
+					auth.anyRequest().permitAll(); 
 				})
 				.build();
 	}
@@ -72,7 +66,6 @@ public class SpringSecurityConfig {
                 .build();
     }
 
-	
 	@Bean
 	@Order(3)
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -84,8 +77,6 @@ public class SpringSecurityConfig {
 			.httpBasic(Customizer.withDefaults()).build();
 	}
 
-	
-	
 	@Bean
 	public JwtEncoder jwtEncoder() {
 		return new NimbusJwtEncoder(new ImmutableSecret<>(this.jwtKey.getBytes()));

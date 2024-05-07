@@ -26,8 +26,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     User findByName(String username);
 
-    User findByUsername(String username);
-
 }
 
 
