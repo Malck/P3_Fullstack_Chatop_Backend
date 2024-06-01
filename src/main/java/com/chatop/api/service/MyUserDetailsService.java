@@ -6,7 +6,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.chatop.api.model.User;
-import com.chatop.api.model.UserDTO;
 import com.chatop.api.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +18,6 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
-
     /**
      * Load a user by its username.
      * @param username User's username.
@@ -36,6 +34,16 @@ public class MyUserDetailsService implements UserDetailsService {
         User user = optionalUser.get();
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(), user.getPassword(), getAuthorities("USER"));
+    }
+
+    public User loadUserByUsername2(String username) throws UsernameNotFoundException {
+        Optional<User> optionalUser = userRepository.findFirstByEmail(username);
+        if (optionalUser.isEmpty()) {
+            throw new UsernameNotFoundException(String.format("User with email=%s is not found.", username));
+        }
+
+        User user = optionalUser.get();
+        return user;
     }
 
     /**

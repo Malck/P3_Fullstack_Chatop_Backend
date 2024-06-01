@@ -17,6 +17,7 @@ import com.chatop.api.model.User;
 import com.chatop.api.repository.RentalRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -31,8 +32,22 @@ public class RentalService {
     }
 
     /* ici pour recuperer les rentals avec le get dans rentalcontroller */
+
+    // @Value("${server.port}")
+    // private String port;
+
+    // @Value("${APP_DB_HOST}")
+    // private String host = "http://localhost:";
+    
     public List<Rental> getAllRentals() {
-        return rentalRepository.findAll();
+
+        List<Rental> rentalList = rentalRepository.findAll();
+        for (Rental rental : rentalList){
+            String picturePath = "";
+            picturePath = rental.getPicture();
+            rental.setPicture("https://localhost:3001" +picturePath);
+        }
+        return rentalList;
     }
 
     public Rental updateRental(Rental rental) {
@@ -76,7 +91,7 @@ public class RentalService {
         // Générer un nom de fichier unique
         String fileName = UUID.randomUUID().toString() + "_" + picture.getOriginalFilename();
         // Obtenir le chemin d'accès complet vers le répertoire de téléchargement
-        String uploadDir = "/Files"; 
+        String uploadDir = "Files/"; 
         // Enregistrer le fichier dans le répertoire de téléchargement
         Path filePath = Paths.get(uploadDir, fileName);
 

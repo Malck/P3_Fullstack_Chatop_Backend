@@ -46,3 +46,6 @@ INSERT INTO USERS (email, name, password)
 ('test@test.com', 'test TEST', 'test!31');
 
 /* Ajouter des rentals ici pour les afficher avec le get dans le rentalcontroller*/ 
+INSERT INTO RENTALS (id, name, surface, price, picture, description, owner_id)
+VALUES (55, 'maisontest', 45, 5, 'ldc.jpg', 'description test', 1),
+       (62, 'maisontest2a', 55, 36, 'test.png', 'description test 2', 2);
