@@ -21,6 +21,8 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+
 import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
@@ -44,17 +46,20 @@ public class SpringSecurityConfig {
 	
 	@Bean
     @Order(1)
-    public SecurityFilterChain noAuthFilterChain(HttpSecurity http) throws Exception {
+    
+	public SecurityFilterChain noAuthFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.antMatcher("/api/auth/register")
+				.antMatcher("/Files/**")
+				.antMatcher("/v2/api-docs/**")
 				.authorizeHttpRequests(auth -> {
 					auth.anyRequest().permitAll(); 
 				})
 				.build();
-	}
-
+	} 
+	
 	@Bean
     @Order(2)
     public SecurityFilterChain noAuthaFilterChain(HttpSecurity http) throws Exception {

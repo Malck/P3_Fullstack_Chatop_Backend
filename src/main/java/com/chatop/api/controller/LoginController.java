@@ -16,6 +16,8 @@ import com.chatop.api.service.JWTService;
 import com.chatop.api.service.MyUserDetailsService;
 import com.chatop.api.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
+
 import java.security.Principal;
 import java.util.Map;
 
@@ -40,6 +42,7 @@ public class LoginController {
 	}
 
 	@PostMapping("/api/auth/register") 
+	@ApiOperation(value = "Enregistre un nouvel utilisateur")
 	
 	public ResponseEntity<?> saveUser(@RequestBody User userDTO) throws Exception {
 
@@ -61,6 +64,7 @@ public class LoginController {
 
 
 	@PostMapping("/api/auth/login")
+	@ApiOperation(value = "Log d'un utilisateur")
 
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 

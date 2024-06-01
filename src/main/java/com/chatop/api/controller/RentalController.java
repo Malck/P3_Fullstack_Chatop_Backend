@@ -3,6 +3,8 @@ package com.chatop.api.controller;
 import com.chatop.api.model.Rental;
 import com.chatop.api.service.RentalService;
 
+import io.swagger.annotations.ApiOperation;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
@@ -24,6 +24,8 @@ public class RentalController {
     private RentalService rentalService;
 
     @PostMapping(value = "/rentals")
+    @ApiOperation(value = "Enresistre une nouvelle location")
+    
     public ResponseEntity<String> createRentals(
             @RequestParam("name") String name,
             @RequestParam("surface") int surface,
@@ -41,6 +43,8 @@ public class RentalController {
     }
 
     @GetMapping("/rentals")
+    @ApiOperation(value = "Récupère toutes les locations")
+
     public ResponseEntity<Map<String, List<Rental>>> getAllRentals() {
         List<Rental> rentals = rentalService.getAllRentals();
         Map<String, List<Rental>> ret = new HashMap();
@@ -49,11 +53,15 @@ public class RentalController {
     }
 
     @GetMapping("rental/{id}")
+    @ApiOperation(value = "Récupère une location particulière")
+
     public ResponseEntity<Optional<Rental>> rentalDetail(@PathVariable int id) {
         return ResponseEntity.ok(rentalService.getRental(id));
     }
     
     @PutMapping("rental/{id}")
+    @ApiOperation(value = "Modifie une location particulière")
+    
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Rental> updateRental(@PathVariable("id") Integer id, @RequestBody Rental updateRental) {
         Rental updatedRental = rentalService.updateRental(updateRental);
