@@ -47,15 +47,13 @@ public class SpringSecurityConfig {
 	@Bean
     @Order(1)
     
+	
 	public SecurityFilterChain noAuthFilterChain(HttpSecurity http) throws Exception {
 		return http
 				.csrf(csrf -> csrf.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.antMatcher("/api/auth/register")
-				.antMatcher("/Files/**")
-				.antMatcher("/v2/api-docs/**")
 				.authorizeHttpRequests(auth -> {
-					auth.anyRequest().permitAll(); 
+					auth.antMatchers("/v2/api-docs/**","/Files/**","/api/auth/register","/swagger-ui/**").permitAll(); 
 				})
 				.build();
 	} 
