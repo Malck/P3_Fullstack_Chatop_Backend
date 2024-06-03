@@ -41,11 +41,10 @@ ALTER TABLE `MESSAGES` ADD FOREIGN KEY (`user_id`) REFERENCES `USERS` (`id`);
 ALTER TABLE `MESSAGES` ADD FOREIGN KEY (`rental_id`) REFERENCES `RENTALS` (`id`);
 
 INSERT INTO USERS (email, name, password)
- VALUES ('user@user.fr','user', '$2y$10$.qkbukzzX21D.bqbI.B2R.tvWP90o/Y16QRWVLodw51BHft7ZWbc.' ),
-('admin@admin.fr','admin', '$2y$10$kp1V7UYDEWn17WSK16UcmOnFd1mPFVF6UkLrOOCGtf24HOYt8p1iC'),
-('test@test.com', 'test TEST', 'test!31');
+ VALUES ('admin@admin.fr','admin', '$2y$10$kp1V7UYDEWn17WSK16UcmOnFd1mPFVF6UkLrOOCGtf24HOYt8p1iC'),
+('hugo@test.com', 'test TEST', 'hugo!31');
 
-/* Ajouter des rentals ici pour les afficher avec le get dans le rentalcontroller*/ 
+
 INSERT INTO RENTALS (id, name, surface, price, picture, description, owner_id)
-VALUES (55, 'maisontest', 45, 5, 'ldc.jpg', 'description test', 1),
-       (62, 'maisontest2a', 55, 36, 'test.png', 'description test 2', 2);
+VALUES (1, 'Maison Pierre', 45, 5, 'Files/maisons-pierre.jpg', 'Cette maison chaleureuse est entouree d un petit jardin fleuri et dispose d un toit en tuiles rouges.', 1),
+       (5, 'Villa almeida', 55, 36, 'Files/maison-moderne.jpg', 'Cette villa luxueuse est nichee sur une colline offrant une vue panoramique sur la mer Mediterranee. Elle est dotee d une piscine a debordement de vastes terrasses et de jardins paysagers exquis.', 2);
