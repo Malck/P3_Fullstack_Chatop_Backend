@@ -31,21 +31,14 @@ public class RentalService {
         return rentalRepository.findById(id);
     }
 
-    /* ici pour recuperer les rentals avec le get dans rentalcontroller */
 
-    // @Value("${server.port}")
-    // private String port;
-
-    // @Value("${APP_DB_HOST}")
-    // private String host = "http://localhost:";
-    
     public List<Rental> getAllRentals() {
 
         List<Rental> rentalList = rentalRepository.findAll();
         for (Rental rental : rentalList){
             String picturePath = "";
             picturePath = rental.getPicture();
-            rental.setPicture("https://localhost:3001" +picturePath);
+            rental.setPicture("http://localhost:3001/" +picturePath);
         }
         return rentalList;
     }
@@ -54,11 +47,6 @@ public class RentalService {
         Rental updateRental = rentalRepository.save(rental);
         return updateRental;
     }
-
-    public Rental createRental(Rental rental) {
-        Rental savedRental = rentalRepository.save(rental);
-        return savedRental;
-    }  
 
     public RentalService(RentalRepository rentalRepository) {
         this.rentalRepository = rentalRepository;
@@ -88,11 +76,11 @@ public class RentalService {
     }
 
     private String savePicture(MultipartFile picture) throws IOException {
-        // Générer un nom de fichier unique
-        String fileName = UUID.randomUUID().toString() + "_" + picture.getOriginalFilename();
-        // Obtenir le chemin d'accès complet vers le répertoire de téléchargement
-        String uploadDir = "Files/"; 
-        // Enregistrer le fichier dans le répertoire de téléchargement
+        
+        String fileName = picture.getOriginalFilename();
+        
+        String uploadDir = "Files"; 
+
         Path filePath = Paths.get(uploadDir, fileName);
 
       try {
